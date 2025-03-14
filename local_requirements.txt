@@ -1,0 +1,13 @@
+email-validator
+flask
+flask-login
+flask-sqlalchemy
+flask-wtf
+gunicorn
+langchain
+langchain-groq
+psycopg2-binary
+python-dotenv
+sqlalchemy
+tavily-python
+werkzeug
