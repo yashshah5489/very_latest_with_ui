@@ -165,7 +165,9 @@
     }
     
     .dashboard-container {
-        padding: 1rem 0;
+        padding: 1.5rem 0;
+        max-width: 1600px;
+        margin: 0 auto;
     }
     
     .dashboard-title {
@@ -174,20 +176,46 @@
         background-clip: text;
         color: transparent;
         font-weight: 700;
+        font-size: 2.2rem;
     }
     
     .ai-chat {
-        height: 400px;
+        height: 450px;
     }
     
     .ai-chat-messages {
-        height: 320px;
+        height: 370px;
         overflow-y: auto;
-        padding: 1rem;
+        padding: 1.5rem;
     }
     
     .market-summary-card, .at-glance-card {
         height: 100%;
+    }
+    
+    /* Laptop/Desktop optimizations */
+    .card {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        margin-bottom: 1.5rem;
+    }
+    
+    .card-header {
+        padding: 1.25rem 1.5rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .row {
+        margin-bottom: 2rem;
+    }
+    
+    /* Create more horizontal space */
+    @media (min-width: 1200px) {
+        .container, .container-lg, .container-md, .container-sm, .container-xl {
+            max-width: 1400px;
+        }
     }
 </style>
 {% endblock %}
