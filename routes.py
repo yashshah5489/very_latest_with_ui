@@ -255,55 +255,71 @@ def watchlists():
 def get_news():
     """API endpoint for getting financial news"""
     query = request.args.get('query', '')
+    limit = int(request.args.get('limit', 5))  # Default to 5 news items
     
-    if query:
-        news_items = search_news(query)
-    else:
-        news_items = get_latest_news()
-    
-    # Store in database for future reference
-    for news in news_items:
-        existing_news = FinancialNews.query.filter_by(url=news['url']).first()
-        if not existing_news:
-            new_news = FinancialNews(
-                title=news['title'],
-                url=news['url'],
-                source=news['source'],
-                published_at=news['published_at'],
-                summary=news['summary'],
-                sentiment=news.get('sentiment', 'neutral'),
-                symbols=','.join(news.get('symbols', []) if isinstance(news.get('symbols', []), list) else [])
-            )
-            db.session.add(new_news)
-    
-    db.session.commit()
-    
-    return jsonify(news_items)
+    try:
+        if query:
+            news_items = search_news(query, max_results=limit)
+        else:
+            news_items = get_latest_news(max_results=limit)
+        
+        # Limit to top 5 regardless of what's returned
+        news_items = news_items[:limit]
+        
+        # Store in database for future reference
+        for news in news_items:
+            existing_news = FinancialNews.query.filter_by(url=news['url']).first()
+            if not existing_news:
+                new_news = FinancialNews(
+                    title=news['title'],
+                    url=news['url'],
+                    source=news['source'],
+                    published_at=news['published_at'],
+                    summary=news['summary'],
+                    sentiment=news.get('sentiment', 'neutral'),
+                    symbols=','.join(news.get('symbols', []) if isinstance(news.get('symbols', []), list) else [])
+                )
+                db.session.add(new_news)
+        
+        db.session.commit()
+        
+        return jsonify(news_items)
+    except Exception as e:
+        logging.error(f"Error retrieving news: {str(e)}")
+        return jsonify({'error': 'An error occurred while getting news', 'details': str(e)}), 500
 
 
 @app.route('/api/ai-analysis', methods=['POST'])
 @login_required
 def ai_analysis():
     """API endpoint for getting AI analysis"""
-    data = request.json
-    query = data.get('query', '')
+    if request.is_json:
+        data = request.json
+        query = data.get('query', '')
+    else:
+        # Handle form data for CSRF protection
+        query = request.form.get('query', '')
     
     if not query:
         return jsonify({'error': 'Query is required'}), 400
     
-    # Get AI analysis
-    result = get_ai_analysis(query)
-    
-    # Save to database
-    analysis = AIAnalysis(
-        query=query,
-        response=result,
-        user_id=current_user.id
-    )
-    db.session.add(analysis)
-    db.session.commit()
-    
-    return jsonify({'response': result})
+    try:
+        # Get AI analysis
+        result = get_ai_analysis(query)
+        
+        # Save to database
+        analysis = AIAnalysis(
+            query=query,
+            response=result,
+            user_id=current_user.id
+        )
+        db.session.add(analysis)
+        db.session.commit()
+        
+        return jsonify({'response': result})
+    except Exception as e:
+        logging.error(f"AI analysis error: {str(e)}")
+        return jsonify({'error': 'An error occurred while getting AI analysis', 'details': str(e)}), 500
 
 
 @app.route('/api/stock/<symbol>', methods=['GET'])
