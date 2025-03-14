@@ -271,8 +271,8 @@ def get_news():
                 source=news['source'],
                 published_at=news['published_at'],
                 summary=news['summary'],
-                sentiment=news['sentiment'],
-                symbols=','.join(news['symbols']) if 'symbols' in news else ''
+                sentiment=news.get('sentiment', 'neutral'),
+                symbols=','.join(news.get('symbols', []) if isinstance(news.get('symbols', []), list) else [])
             )
             db.session.add(new_news)
     
