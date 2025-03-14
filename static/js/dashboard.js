@@ -851,6 +851,13 @@ function createPortfolio(name, description) {
  * Shows a modal to add a holding to a portfolio
  */
 function showAddHoldingModal(portfolioId) {
+    // Remove any existing modals first
+    const existingModal = document.getElementById('addHoldingModalContainer');
+    if (existingModal) {
+        document.body.removeChild(existingModal);
+        document.body.classList.remove('modal-open');
+    }
+    
     const modalHtml = `
         <div class="modal fade show" id="addHoldingModal" tabindex="-1" style="display: block;">
             <div class="modal-dialog">
@@ -894,6 +901,7 @@ function showAddHoldingModal(portfolioId) {
     
     // Add modal to DOM
     const modalContainer = document.createElement('div');
+    modalContainer.id = 'addHoldingModalContainer';
     modalContainer.innerHTML = modalHtml;
     document.body.appendChild(modalContainer);
     document.body.classList.add('modal-open');

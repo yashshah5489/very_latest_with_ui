@@ -124,7 +124,7 @@ def get_market_summary() -> Dict[str, Any]:
     try:
         if not ALPHA_VANTAGE_API_KEY:
             logger.warning("ALPHA_VANTAGE_API_KEY is not set in environment variables")
-            # Return dummy data for development/testing
+            # Return error for proper handling
             return {
                 "indices": [
                     {
@@ -150,6 +150,7 @@ def get_market_summary() -> Dict[str, Any]:
                     }
                 ],
                 "sectors": [],
+                "timestamp": datetime.now().isoformat(),
                 "error": "API key not configured"
             }
         
@@ -157,30 +158,42 @@ def get_market_summary() -> Dict[str, Any]:
         indices = ["SPY", "DIA", "QQQ"]
         index_data = []
         
+        # Use a 5-second timeout for requests to prevent hanging
+        # Map symbols to proper names
+        name_map = {
+            "SPY": "S&P 500",
+            "DIA": "Dow Jones Industrial Average",
+            "QQQ": "NASDAQ-100"
+        }
+        
         for symbol in indices:
-            stock_data = get_stock_data(symbol)
-            
-            # Map symbols to proper names
-            name_map = {
-                "SPY": "S&P 500",
-                "DIA": "Dow Jones Industrial Average",
-                "QQQ": "NASDAQ-100"
-            }
-            
-            index_data.append({
-                "symbol": symbol,
-                "name": name_map.get(symbol, symbol),
-                "price": stock_data["price"],
-                "change": stock_data["change"],
-                "change_percent": stock_data["change_percent"]
-            })
+            try:
+                stock_data = get_stock_data(symbol)
+                
+                index_data.append({
+                    "symbol": symbol,
+                    "name": name_map.get(symbol, symbol),
+                    "price": stock_data["price"],
+                    "change": stock_data["change"],
+                    "change_percent": stock_data["change_percent"]
+                })
+            except Exception as symbol_error:
+                logger.error(f"Error getting data for symbol {symbol}: {str(symbol_error)}")
+                # Add placeholder with error for this symbol but continue with others
+                index_data.append({
+                    "symbol": symbol,
+                    "name": name_map.get(symbol, symbol),
+                    "price": 0.0,
+                    "change": 0.0,
+                    "change_percent": 0.0,
+                    "error": str(symbol_error)
+                })
         
-        # In a real implementation, we would also get sector performance
-        # For now, we'll provide placeholder data
-        
+        # Add timestamp for cache control and display
         return {
             "indices": index_data,
-            "sectors": []  # Would include sector performance data
+            "sectors": [],  # Would include sector performance data
+            "timestamp": datetime.now().isoformat()
         }
     
     except Exception as e:
@@ -188,6 +201,7 @@ def get_market_summary() -> Dict[str, Any]:
         return {
             "indices": [],
             "sectors": [],
+            "timestamp": datetime.now().isoformat(),
             "error": str(e)
         }
 

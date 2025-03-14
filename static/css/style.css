@@ -308,13 +308,18 @@ code, pre {
 .main-content {
   margin-left: 250px;
   padding: var(--spacing-xl);
+  max-width: calc(100vw - 250px);
+  overflow-x: hidden;
 }
 
 /* Dashboard */
 .dashboard {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--spacing-lg);
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--spacing-xl);
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 .dashboard-header {
