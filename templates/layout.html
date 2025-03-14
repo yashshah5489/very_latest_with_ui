@@ -82,31 +82,31 @@
     <div class="main-content">
         <!-- Top navbar -->
         <nav class="navbar">
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center" style="width: 40%;">
                 <button id="sidebar-toggle" class="btn btn-sm btn-outline d-md-none mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </button>
                 <h4 class="mb-0">Financial AI Analytics</h4>
-                <form id="search-form" class="ml-4">
+            </div>
+            <div class="d-flex align-items-center justify-content-end" style="width: 60%;">
+                <form id="search-form" class="mr-4" style="width: 350px;">
                     <div class="d-flex align-items-center">
-                        <input type="text" class="form-control" placeholder="Search stocks, news, analysis..." id="search-input" style="width: 300px;">
+                        <input type="text" class="form-control" placeholder="Search stocks, news, analysis..." id="search-input">
                         <button class="btn btn-primary ml-2" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </button>
                     </div>
                 </form>
-            </div>
-            <div class="d-flex align-items-center">
-                <a href="#notifications" class="btn btn-sm btn-outline mr-2">
+                <a href="#notifications" class="btn btn-sm btn-outline mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                 </a>
                 <div class="user-menu">
                     <div class="d-flex align-items-center">
-                        <a href="{{ url_for('dashboard') }}" class="btn btn-sm btn-outline mr-2">
-                            <span class="ml-1 d-none d-md-inline">{{ current_user.username }}</span>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-sm btn-outline mr-3">
+                            <span>{{ current_user.username }}</span>
                         </a>
-                        <a href="#profile" class="btn btn-sm btn-outline mr-2">Profile</a>
-                        <a href="#settings" class="btn btn-sm btn-outline mr-2">Settings</a>
+                        <a href="{{ url_for('dashboard') }}?tab=profile" class="btn btn-sm btn-outline mr-3">Profile</a>
+                        <a href="{{ url_for('dashboard') }}?tab=settings" class="btn btn-sm btn-outline mr-3">Settings</a>
                         <a href="{{ url_for('logout') }}" class="btn btn-sm btn-danger">Logout</a>
                     </div>
                 </div>

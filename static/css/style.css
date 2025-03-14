@@ -201,9 +201,8 @@ code, pre {
   background-color: var(--primary-dark);
   padding: var(--spacing-md) var(--spacing-lg);
   box-shadow: var(--shadow-md);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  position: relative;
+  z-index: 50;
 }
 
 .navbar-brand {
@@ -315,10 +314,10 @@ code, pre {
 /* Dashboard */
 .dashboard {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   gap: var(--spacing-xl);
   width: 100%;
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
 }
 
