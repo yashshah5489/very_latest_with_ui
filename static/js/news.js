@@ -24,18 +24,48 @@ function initializeNewsModule() {
     // Check if news elements exist (we might be on a different page)
     if (!newsContainer) return;
     
-    // Fetch news
-    fetchLatestNews()
-        .then(data => {
-            allNews = data;
-            filteredNews = [...allNews];
-            renderNews();
-            setupNewsListeners();
-        })
-        .catch(error => {
-            console.error('Error fetching news:', error);
-            showNewsError('Failed to load financial news. Please try again later.');
-        });
+    // Create initial state with fetch button to save API costs
+    newsContainer.innerHTML = `
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Financial News</h5>
+                <button id="fetch-news-btn" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+                    Fetch Latest News
+                </button>
+            </div>
+            <div class="card-body">
+                <p class="text-muted text-center my-4">Click the button above to fetch the latest financial news.</p>
+            </div>
+        </div>
+    `;
+    
+    // Add event listener for fetch button
+    document.getElementById('fetch-news-btn').addEventListener('click', function() {
+        // Show loading spinner
+        newsContainer.innerHTML = `
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <div class="spinner mb-3"></div>
+                    <p>Loading latest financial news...</p>
+                </div>
+            </div>
+        `;
+        
+        // Fetch news
+        fetchLatestNews()
+            .then(data => {
+                // Limit to top 5 news items to improve performance and readability
+                allNews = data.slice(0, 5);
+                filteredNews = [...allNews];
+                renderNews();
+                setupNewsListeners();
+            })
+            .catch(error => {
+                console.error('Error fetching news:', error);
+                showNewsError('Failed to load financial news. Please try again later.');
+            });
+    });
 }
 
 /**
