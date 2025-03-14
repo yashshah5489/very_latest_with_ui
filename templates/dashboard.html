@@ -1,0 +1,243 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard - Financial Analytics{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header mb-4">
+        <h2 class="dashboard-title">Financial Dashboard</h2>
+        <p class="text-muted">Welcome back, {{ current_user.username }}! Here's your financial overview.</p>
+    </div>
+    
+    <!-- Market Overview Section -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Market Overview</h5>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-outline" id="refresh-market-data">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="market-summary">
+                        <div class="text-center">
+                            <div class="spinner"></div>
+                            <p class="text-muted mt-2">Loading market data...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">At a Glance</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h6 class="text-muted mb-1">Portfolios</h6>
+                            <h3 id="portfolio-count">-</h3>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #2fbbf3;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h6 class="text-muted mb-1">Watchlists</h6>
+                            <h3 id="watchlist-count">-</h3>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #4e54c8;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">AI Analyses</h6>
+                            <h3 id="ai-analysis-count">-</h3>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #8c54f8;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Portfolios Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h4 id="portfolios" class="section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-1 14H4V6h16v12z"></path><path d="M6 14l4-5l4 7l2-3l4 1"></path></svg>
+                Your Portfolios
+            </h4>
+            
+            <div id="portfolio-list">
+                <div class="text-center p-4">
+                    <div class="spinner"></div>
+                    <p class="text-muted mt-2">Loading portfolios...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Watchlists and News Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h4 id="watchlists" class="section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                Watchlists
+            </h4>
+            
+            <div id="watchlist-container">
+                <div class="text-center p-4">
+                    <div class="spinner"></div>
+                    <p class="text-muted mt-2">Loading watchlists...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <h4 id="news" class="section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1"></path><path d="M18 8.5V8a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h7"></path><path d="M7 14h7"></path><path d="M7 9h4"></path><circle cx="19" cy="14" r="3"></circle><path d="M22 12v4"></path><path d="M19 9v6"></path></svg>
+                Financial News
+            </h4>
+            
+            <div id="news-container">
+                <div class="text-center p-4">
+                    <div class="spinner"></div>
+                    <p class="text-muted mt-2">Loading financial news...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AI Assistant Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h4 id="ai-assistant" class="section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"></path><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                AI Financial Assistant
+            </h4>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Ask the AI Assistant</h5>
+                </div>
+                <div class="card-body">
+                    <div class="ai-chat">
+                        <div class="ai-chat-messages" id="ai-chat-messages">
+                            <div class="message message-ai">
+                                <p>Hello, I'm your AI financial assistant powered by LangChain and Groq. I can help you with financial analysis, market insights, and investment strategies. How can I assist you today?</p>
+                            </div>
+                        </div>
+                        <div class="ai-chat-input">
+                            <input type="text" class="form-control" id="ai-query" placeholder="Ask about financial markets, stock analysis, or investment strategies...">
+                            <button class="btn btn-primary ml-2" id="ai-submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <p class="text-muted mb-0 small">Powered by LangChain, Groq, and Tavily for financial insights</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .section-title {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .section-title svg {
+        margin-right: 0.5rem;
+    }
+    
+    .dashboard-container {
+        padding: 1rem 0;
+    }
+    
+    .dashboard-title {
+        background: linear-gradient(to right, #2fbbf3, #4e54c8);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 700;
+    }
+    
+    .ai-chat {
+        height: 400px;
+    }
+    
+    .ai-chat-messages {
+        height: 320px;
+        overflow-y: auto;
+        padding: 1rem;
+    }
+    
+    .market-summary-card, .at-glance-card {
+        height: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize UI counts
+        updateDashboardCounts();
+        
+        // Refresh market data button
+        const refreshButton = document.getElementById('refresh-market-data');
+        if (refreshButton) {
+            refreshButton.addEventListener('click', function() {
+                // Show loading spinner
+                document.getElementById('market-summary').innerHTML = `
+                    <div class="text-center">
+                        <div class="spinner"></div>
+                        <p class="text-muted mt-2">Refreshing market data...</p>
+                    </div>
+                `;
+                
+                // Reinitialize market summary
+                initializeMarketSummary();
+            });
+        }
+    });
+    
+    // Update dashboard counts
+    function updateDashboardCounts() {
+        // Update portfolio count
+        fetchPortfolios().then(data => {
+            const countEl = document.getElementById('portfolio-count');
+            if (countEl) countEl.textContent = data.length;
+        }).catch(error => {
+            console.error('Error fetching portfolio count:', error);
+        });
+        
+        // Update watchlist count
+        fetchWatchlists().then(data => {
+            const countEl = document.getElementById('watchlist-count');
+            if (countEl) countEl.textContent = data.length;
+        }).catch(error => {
+            console.error('Error fetching watchlist count:', error);
+        });
+        
+        // For AI analysis count, we'll just use a placeholder for now
+        // In a real implementation, you would fetch this from the backend
+        const aiCountEl = document.getElementById('ai-analysis-count');
+        if (aiCountEl) aiCountEl.textContent = '0';
+    }
+</script>
+{% endblock %}

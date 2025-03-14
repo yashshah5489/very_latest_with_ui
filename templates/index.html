@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+
+{% block title %}FinAI - AI-Powered Financial Analytics{% endblock %}
+
+{% block auth_content %}
+<div class="landing-container">
+    <div class="card auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #2fbbf3;"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
+            </div>
+            <h2 class="auth-title">Financial AI Analytics</h2>
+            <p class="auth-subtitle">Modern AI-powered insights for smarter investing</p>
+        </div>
+        
+        <div class="landing-features">
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #2fbbf3;"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
+                </div>
+                <h3>Portfolio Tracking</h3>
+                <p>Monitor your investments with real-time data and performance metrics</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #4e54c8;"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                </div>
+                <h3>AI-Powered Analytics</h3>
+                <p>Get intelligent insights and predictions powered by advanced AI</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #8c54f8;"><path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1"></path><path d="M18 8.5V8a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h7"></path><path d="M7 14h7"></path><path d="M7 9h4"></path><circle cx="19" cy="14" r="3"></circle><path d="M22 12v4"></path><path d="M19 9v6"></path></svg>
+                </div>
+                <h3>Financial News</h3>
+                <p>Stay informed with curated news and sentiment analysis</p>
+            </div>
+        </div>
+        
+        <div class="auth-actions mt-4">
+            <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg w-100 mb-3">
+                Log In
+            </a>
+            <a href="{{ url_for('register') }}" class="btn btn-outline btn-lg w-100">
+                Create Account
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .landing-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    
+    .auth-card {
+        background: linear-gradient(145deg, #1e1e1e, #242424);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        padding: 3rem 2rem;
+    }
+    
+    .landing-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+    
+    .feature-item {
+        text-align: center;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 8px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .feature-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -10px rgba(47, 187, 243, 0.4);
+    }
+    
+    .feature-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, rgba(47, 187, 243, 0.1), rgba(140, 84, 248, 0.1));
+        border-radius: 50%;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-item h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: #e6e6e6;
+    }
+    
+    .feature-item p {
+        font-size: 0.9rem;
+        color: #aaa;
+        margin-bottom: 0;
+    }
+    
+    .auth-actions {
+        margin-top: 2rem;
+    }
+    
+    .auth-logo {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .auth-title {
+        background: linear-gradient(to right, #2fbbf3, #4e54c8, #8c54f8);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .auth-subtitle {
+        text-align: center;
+        color: #aaa;
+        margin-bottom: 2rem;
+    }
+</style>
+{% endblock %}
